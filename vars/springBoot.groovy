@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment {
-            MAVEN_OPTS="-Duser.home=${WORKSPACE} -Xmx256m"
+            MAVEN_OPTS="-Duser.home=/home/vagrant -Xmx256m"
         }
 
         stages {
@@ -49,7 +49,8 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v /home/vagrant/.m2:${WORKSPACE}/.m2 -e USER_HOME='${WORKSPACE}'"                        reuseNode true
+                        args "-v /home/vagrant/.m2:/home/vagrant/.m2 -e USER_HOME='/home/vagrant'"      
+                        reuseNode true
                     }
                 }
                 options {
@@ -59,7 +60,7 @@ def call(Map config) {
                     sh("env")
                     sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("""
-                    cd ${WORKSPACE}/.m2
+                    cd /home/vagrant/.m2
                     pwd
                     ls -al *
                     """)
