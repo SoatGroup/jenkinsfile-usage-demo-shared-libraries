@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment { 
-            M2_HOME = "${WORKSPACE}/.m2"
+            MAVEN_OPTS = "-Dmaven.home=/root/.m2 -Xmx256m"
         }
 
         stages {
