@@ -13,9 +13,9 @@ def call(Map config) {
             timeout(time: 40, unit: 'MINUTES')
             buildDiscarder(logRotator(numToKeepStr: '10'))
         }
-        
+
         environment { 
-            MAVEN_HOME = "${WORKSPACE}"
+            M2_HOME = "${WORKSPACE}/.m2"
         }
 
         stages {
