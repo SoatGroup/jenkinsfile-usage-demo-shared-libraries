@@ -50,6 +50,7 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
+                    sh("pwd")
                     sh("ls -al ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --version")
                     sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --batch-mode compile")
