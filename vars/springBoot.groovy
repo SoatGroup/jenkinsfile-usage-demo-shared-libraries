@@ -53,6 +53,7 @@ def call(Map config) {
                     echo "${MAVEN_USER_HOME}"
                     sh("env")
                     sh("pwd")
+                    sh("touch ${MAVEN_USER_HOME}/test.toto")
                     sh("ls -al ${MAVEN_USER_HOME}")
 
                     sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
