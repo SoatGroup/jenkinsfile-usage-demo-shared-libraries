@@ -54,6 +54,7 @@ def call(Map config) {
                     sh("pwd")
                     sh("ls -al ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw --version")
+                    sh("cd ${config.folder} && ./mvnw help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*/*")
