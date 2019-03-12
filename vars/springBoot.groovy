@@ -45,7 +45,6 @@ def call(Map config) {
                 steps {
                     sh("env")
                     sh("cd ${config.folder} && ./mvnw --version")
-                    sh("cd ${config.folder} && ./mvnw  help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
