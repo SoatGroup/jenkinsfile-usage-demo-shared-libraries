@@ -59,7 +59,7 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
-                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
+                    sh("cd ${config.folder} && mvn --batch-mode help:effective-settings")
                     // sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                     sh("ls -al ${M2_REPOSITORY}/*")
                 }
