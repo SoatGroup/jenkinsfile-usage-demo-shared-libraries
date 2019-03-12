@@ -42,7 +42,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v /home/vagrant/.m2:${MAVEN_USER_HOME}"
+                        args "-v /home/vagrant/.m2:${MAVEN_USER_HOME}:rw"
                         reuseNode true
                     }
                 }
@@ -51,8 +51,8 @@ def call(Map config) {
                 }
                 steps {
                     echo "${MAVEN_USER_HOME}"
-                    sh("env")
                     sh("pwd")
+                    sh("ls -al ${MAVEN_USER_HOME}")
                     sh("touch ${MAVEN_USER_HOME}/test.toto")
                     sh("ls -al ${MAVEN_USER_HOME}")
 
