@@ -35,7 +35,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args '-v $HOME/.m2:/.m2'
+                        args '-v $HOME/.m2:/root/.m2'
                         reuseNode true
                     }
                 }
@@ -43,6 +43,9 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
+                    sh("env")
+                    sh("cd ${config.folder} && ./mvnw --version")
+                    sh("cd ${config.folder} && ./mvnw  help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
@@ -51,7 +54,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args '-v $HOME/.m2:/.m2'
+                        args '-v $HOME/.m2:/root/.m2'
                         reuseNode true
                     }
                 }
@@ -76,7 +79,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args '-v $HOME/.m2:/.m2'
+                        args '-v $HOME/.m2:/root/.m2'
                         reuseNode true
                     }
                 }
