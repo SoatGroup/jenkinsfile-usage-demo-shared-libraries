@@ -16,8 +16,8 @@ def call(Map config) {
 
         environment {
             MVNW_VERBOSE="true"
-            M2_HOME='/root/.m2' 
-            MAVEN_OPTS = "-Dmaven.home=/root/.m2 -Xmx256m"
+            M2_HOME="${WORKSPACE}/.m2"
+            MAVEN_OPTS="-Dmaven.home=${WORKSPACE}/.m2 -Xmx256m"
         }
 
         stages {
@@ -41,7 +41,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v $HOME/.m2:/root/.m2"
+                        args "-v ${HOME}/.m2:${WORKSPACE}/.m2"
                         reuseNode true
                     }
                 }
