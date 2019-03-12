@@ -48,6 +48,7 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
+                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
