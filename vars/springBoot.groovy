@@ -41,7 +41,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:${WORKSPACE}/.m2"
+                        args "-v /home/vagrant/.m2:${M2_HOME}"
                         reuseNode true
                     }
                 }
@@ -55,6 +55,7 @@ def call(Map config) {
                     sh("ls -al ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw --version")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
+                    sh("ls -al ${M2_HOME}/*")
                 }
             }
 
