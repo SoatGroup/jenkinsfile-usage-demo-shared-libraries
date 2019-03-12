@@ -48,8 +48,8 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
-                    sh("cd ${config.folder} && ./mvnw --version")
-                    sh("cd ${config.folder} && ./mvnw --batch-mode compile")
+                    sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --version")
+                    sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --batch-mode compile")
                 }
             }
 
