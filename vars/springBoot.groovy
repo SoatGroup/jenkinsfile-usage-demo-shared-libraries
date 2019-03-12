@@ -21,7 +21,7 @@ def call(Map config) {
                     Sample of spring boot application :
 
                     Shared library variables :
-                    * repository : ${config.repository}
+                    * folder : ${config.folder}
 
                     Pipeline description :
                     * COMPILE : Compile application
