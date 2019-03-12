@@ -58,8 +58,8 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
-                    sh("cd ${config.folder} && ./mvnw --Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode help:effective-settings")
-                    sh("cd ${config.folder} && ./mvnw --Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode compile")
+                    sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode help:effective-settings")
+                    sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode compile")
                     sh("ls -al ${MAVEN_USER_HOME}/*")
                 }
             }
