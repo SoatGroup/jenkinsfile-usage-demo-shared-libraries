@@ -49,11 +49,12 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
+                    echo "${M2_HOME}"
                     sh("env")
                     sh("pwd")
                     sh("ls -al ${M2_HOME}")
-                    sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --version")
-                    sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --batch-mode compile")
+                    sh("cd ${config.folder} && ./mvnw --version")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
 
