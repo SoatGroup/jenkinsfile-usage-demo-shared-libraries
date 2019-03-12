@@ -85,6 +85,7 @@ def call(Map config) {
 
             stage('RELEASE') {
                 when {
+                    beforeAgent true
                     branch 'master'
                 }
                 agent {
