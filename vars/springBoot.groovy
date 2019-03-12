@@ -50,15 +50,11 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:/root/.m2"
-                        reuseNode true
+                        args "-v ${HOME}/.m2:${WORKSPACE}/.m2 -e USER_HOME='${WORKSPACE}'"                        reuseNode true
                     }
                 }
                 options {
                     timeout(time: 10, unit: 'MINUTES')
-                }
-                environment {
-                   USER_HOME="${WORKSPACE}"
                 }
                 steps {
                     sh("env")
