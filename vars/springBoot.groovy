@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 // vars/springBoot.groovy
-def call(String repository, String folder, String credentialId='github-id') {
+def call(Map config) {
 
     pipeline {
 
@@ -18,21 +18,22 @@ def call(String repository, String folder, String credentialId='github-id') {
             stage('DESCRIPTION') {
                 steps {
                     echo("""
-                Sample of spring boot application :
+                    Sample of spring boot application :
 
-                Requirements :
-                * [Recommended] Set new credentials : ${JENKINS_URL}credentials/store/system/domain/_/newCredentials
-                  * Type : username & password
-                  * ID : 'github-id'
-                  * Username : YOUR_GITHUB_USER
-                  * Password : YOUR_GITHUB_PASSWORD
+                    Requirements :
+                    * [Recommended] Set new credentials : ${JENKINS_URL}credentials/store/system/domain/_/newCredentials
+                    * Type : username & password
+                    * ID : 'github-id'
+                    * Username : YOUR_GITHUB_USER
+                    * Password : YOUR_GITHUB_PASSWORD
 
-                Pipeline description :
-                * COMPILE : Compile application
-                * TESTS : Launch tests
-                * RELEASE : Execute release (only on master branch)
-                """)
-                }
+                    Pipeline description :
+                    * COMPILE : Compile application
+                    * TESTS : Launch tests
+                    * RELEASE : Execute release (only on master branch)
+                    """)
+                    }
+                    sh('env')
             }
 
             stage('CHECKOUT') {
@@ -41,7 +42,7 @@ def call(String repository, String folder, String credentialId='github-id') {
                             $class: 'GitSCM',
                             branches: [[name: "${env.GIT_BRANCH}"]],
                             doGenerateSubmoduleConfigurations: false,
-                            userRemoteConfigs: [[credentialsId: "${credentialId}", url: "${repository}"]]
+                            userRemoteConfigs: [[credentialsId: "${config.credentialsId 'github-id'}", url: "${config.repository}"]]
                     ])
                 }
             }
@@ -58,7 +59,7 @@ def call(String repository, String folder, String credentialId='github-id') {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
-                    sh("cd sample-spring-boot-app && ./mvnw --batch-mode compile")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
 
@@ -74,11 +75,11 @@ def call(String repository, String folder, String credentialId='github-id') {
                     timeout(time: 15, unit: 'MINUTES')
                 }
                 steps {
-                    sh("cd ${folder} && ./mvnw --batch-mode test")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode test")
                 }
                 post {
                     always {
-                        junit "${folder}/**/TEST-*.xml"
+                        junit "${config.folder}/**/TEST-*.xml"
                     }
                 }
 
