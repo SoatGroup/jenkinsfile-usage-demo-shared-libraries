@@ -57,6 +57,9 @@ def call(Map config) {
                 options {
                     timeout(time: 10, unit: 'MINUTES')
                 }
+                environment {
+                   USER_HOME="${WORKSPACE}"
+                }
                 steps {
                     sh("env")
                     sh("cd ${config.folder} && mvn --batch-mode help:effective-settings")
