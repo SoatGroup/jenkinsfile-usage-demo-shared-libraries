@@ -38,11 +38,17 @@ def call(Map config) {
                 }
             }
 
+            stage('PREPARE') {
+                steps {
+                   sh("mkdir ${HOME}/.m2 && chown -R jenkins:jenkins ${HOME}/.m2")
+                }
+            }
+
             stage('COMPILE') {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v /home/vagrant/.m2:${MAVEN_USER_HOME}:rw"
+                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}:rw"
                         reuseNode true
                     }
                 }
