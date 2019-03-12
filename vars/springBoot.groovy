@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment {
-            MAVEN_USER_HOME="${WORKSPACE}/${config.folder}/.m2"
+            M2_REPOSITORY="${WORKSPACE}/${config.folder}/?/.m2"
             MAVEN_OPTS="-Xmx256m"
         }
 
@@ -50,7 +50,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}"
+                        args "-v ${HOME}/.m2:${M2_REPOSITORY}"
                         reuseNode true
                     }
                 }
@@ -61,7 +61,7 @@ def call(Map config) {
                     sh("env")
                     sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode compile")
-                    sh("ls -al ${MAVEN_USER_HOME}/*")
+                    sh("ls -al ${M2_REPOSITORY}/*")
                 }
             }
 
