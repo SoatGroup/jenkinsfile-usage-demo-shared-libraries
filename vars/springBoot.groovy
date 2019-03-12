@@ -27,6 +27,11 @@ def call(Map config) {
                     * Username : YOUR_GITHUB_USER
                     * Password : YOUR_GITHUB_PASSWORD
 
+                    Shared library variables :
+                    * folder : ${config.folder}
+                    * credentials : ${config.credentialsId}
+                    * repository : ${config.repository}
+
                     Pipeline description :
                     * COMPILE : Compile application
                     * TESTS : Launch tests
@@ -43,7 +48,7 @@ def call(Map config) {
                             $class: 'GitSCM',
                             branches: [[name: "${env.GIT_BRANCH}"]],
                             doGenerateSubmoduleConfigurations: false,
-                            userRemoteConfigs: [[credentialsId: "${config.credentialsId 'github-id'}", url: "${config.repository}"]]
+                            userRemoteConfigs: [[credentialsId: "${config.credentialsId}", url: "${config.repository}"]]
                     ])
                 }
             }
