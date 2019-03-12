@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment {
-            MAVEN_USER_HOME="${WORKSPACE}/.m2"
+            MAVEN_USER_HOME="${WORKSPACE}/${config.folder}/.m2"
             MAVEN_OPTS="-Xmx256m"
         }
 
