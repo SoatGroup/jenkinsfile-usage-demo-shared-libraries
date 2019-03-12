@@ -48,7 +48,6 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
-                    sh("mkdir ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw --version")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
