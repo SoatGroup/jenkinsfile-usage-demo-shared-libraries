@@ -15,10 +15,8 @@ def call(Map config) {
         }
 
         environment {
-            MVNW_VERBOSE="true"
             MAVEN_USER_HOME="${WORKSPACE}/${config.folder}/.m2"
             MAVEN_OPTS="-Xmx256m"
-            // MAVEN_OPTS="-Dmaven.user.home=${WORKSPACE}/.m2 -Xmx256m"
         }
 
         stages {
@@ -31,6 +29,7 @@ def call(Map config) {
                     * folder : ${config.folder}
 
                     Pipeline description :
+                    * PREPARE : Ensure .m2 cache directory exist
                     * COMPILE : Compile application
                     * TESTS : Launch tests
                     * RELEASE : Execute release (only on master branch)
@@ -51,7 +50,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}:rw"
+                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}"
                         reuseNode true
                     }
                 }
@@ -59,63 +58,55 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
-                    echo "${MAVEN_USER_HOME}"
-                    sh("pwd")
-                    sh("ls -al ${MAVEN_USER_HOME}")
-                    sh("touch ${MAVEN_USER_HOME}/test.toto")
-                    sh("ls -al ${MAVEN_USER_HOME}")
-
-                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
-                    sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*")
-                    sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*/*")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
 
-            // stage('TESTS') {
-            //     agent {
-            //         docker {
-            //             image 'openjdk:11-jdk-slim'
-            //             args '-v $HOME/.m2:/root/.m2'
-            //             reuseNode true
-            //         }
-            //     }
-            //     options {
-            //         timeout(time: 15, unit: 'MINUTES')
-            //     }
-            //     steps {
-            //         sh("cd ${config.folder} && ./mvnw --batch-mode test")
-            //     }
-            //     post {
-            //         always {
-            //             junit "${config.folder}/**/TEST-*.xml"
-            //         }
-            //     }
+            stage('TESTS') {
+                agent {
+                    docker {
+                        image 'openjdk:11-jdk-slim'
+                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}"
+                        reuseNode true
+                    }
+                }
+                options {
+                    timeout(time: 15, unit: 'MINUTES')
+                }
+                steps {
+                    sh("cd ${config.folder} && ./mvnw --batch-mode test")
+                }
+                post {
+                    always {
+                        junit "${config.folder}/**/TEST-*.xml"
+                    }
+                }
 
-            // }
+            }
 
-            // stage('RELEASE') {
-            //     when {
-            //         branch 'master'
-            //     }
-            //     agent {
-            //         docker {
-            //             image 'openjdk:11-jdk-slim'
-            //             args '-v $HOME/.m2:/root/.m2'
-            //             reuseNode true
-            //         }
-            //     }
-            //     options {
-            //         timeout(time: 15, unit: 'MINUTES')
-            //     }
-            //     steps {
-            //         sh("cd ${config.folder} && ./mvnw --batch-mode release:prepare release:perform")
-            //     }
-            //     post {
-            //         success {
-            //             echo ("A new release have been made !!\nShould send email or a slack notif instead !")
-            //         }
-            //     }
-            // }
+            stage('RELEASE') {
+                when {
+                    branch 'master'
+                }
+                agent {
+                    docker {
+                        image 'openjdk:11-jdk-slim'
+                        args "-v ${HOME}/.m2:${MAVEN_USER_HOME}"
+                        reuseNode true
+                    }
+                }
+                options {
+                    timeout(time: 15, unit: 'MINUTES')
+                }
+                steps {
+                    sh("cd ${config.folder} && ./mvnw --batch-mode release:prepare release:perform")
+                }
+                post {
+                    success {
+                        echo ("A new release have been made !!\nShould send email or a slack notif instead !")
+                    }
+                }
+            }
 
         }
 
