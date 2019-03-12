@@ -17,8 +17,7 @@ def call(Map config) {
         environment {
             MVNW_VERBOSE="true"
             M2_HOME="${WORKSPACE}/.m2"
-            MAVEN_USER_HOME="${WORKSPACE}/.m2"
-            MAVEN_OPTS="-Dmaven.home=${WORKSPACE}/.m2 -Xmx256m"
+            MAVEN_OPTS="-Dmaven.user.home=${WORKSPACE}/.m2 -Xmx256m"
         }
 
         stages {
@@ -54,6 +53,7 @@ def call(Map config) {
                     sh("env")
                     sh("pwd")
                     sh("ls -al ${M2_HOME}")
+
                     sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*/*")
