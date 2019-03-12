@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment {
-            MAVEN_OPTS="-Xmx256m"
+            MAVEN_OPTS="-Duser.home=${USER_HOME} -Xmx256m"
         }
 
         stages {
@@ -33,15 +33,6 @@ def call(Map config) {
                     * TESTS : Launch tests
                     * RELEASE : Execute release (only on master branch)
                     """)
-                }
-            }
-
-            stage('PREPARE') {
-                steps {
-                   sh("""
-                   mkdir ${HOME}/.m2 || true
-                   chown -R 1000:1000 ${HOME}/.m2
-                   """)
                 }
             }
 
