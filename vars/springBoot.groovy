@@ -49,8 +49,8 @@ def call(Map config) {
             stage('COMPILE') {
                 agent {
                     docker {
-                        image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:${M2_REPOSITORY}"
+                        image 'maven:3.6.0-jdk-11-slim'
+                        args "-v ${HOME}/.m2:/root/.m2"
                         reuseNode true
                     }
                 }
@@ -114,9 +114,9 @@ def call(Map config) {
         }
 
         post {
-            // always {
-            //     cleanWs()
-            // }
+            always {
+                cleanWs()
+            }
             failure {
                 echo ("Something was wrong !!\nShould send email or a slack notif instead !")
             }
