@@ -15,7 +15,6 @@ def call(Map config) {
         }
 
         environment {
-            M2_REPOSITORY="${WORKSPACE}/${config.folder}/\?/.m2"
             MAVEN_OPTS="-Xmx256m"
         }
 
@@ -50,7 +49,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v ${HOME}/.m2:${M2_REPOSITORY}"
+                        args "-v ${HOME}/.m2:${WORKSPACE}/${config.folder}/\?/.m2"
                         reuseNode true
                     }
                 }
