@@ -40,7 +40,7 @@ def call(Map config) {
 
             stage('PREPARE') {
                 steps {
-                   sh("mkdir ${HOME}/.m2 && chown -R jenkins:jenkins ${HOME}/.m2")
+                   sh("mkdir ${HOME}/.m2 && chown -R 1000:1000 ${HOME}/.m2")
                 }
             }
 
