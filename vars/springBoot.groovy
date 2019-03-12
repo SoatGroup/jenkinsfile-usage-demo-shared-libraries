@@ -15,7 +15,7 @@ def call(Map config) {
         }
 
         environment {
-            M2_REPOSITORY="${WORKSPACE}/${config.folder}/?/.m2"
+            M2_REPOSITORY="${WORKSPACE}/${config.folder}/\?/.m2"
             MAVEN_OPTS="-Xmx256m"
         }
 
@@ -59,8 +59,8 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
-                    sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode help:effective-settings")
-                    sh("cd ${config.folder} && ./mvnw -Dmaven.user.home=${MAVEN_USER_HOME} --batch-mode compile")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                     sh("ls -al ${M2_REPOSITORY}/*")
                 }
             }
