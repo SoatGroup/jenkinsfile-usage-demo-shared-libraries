@@ -54,58 +54,58 @@ def call(Map config) {
                     sh("pwd")
                     sh("ls -al ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw --version")
-                    sh("cd ${config.folder} && ./mvnw help:effective-settings")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*/*")
                 }
             }
 
-            stage('TESTS') {
-                agent {
-                    docker {
-                        image 'openjdk:11-jdk-slim'
-                        args '-v $HOME/.m2:/root/.m2'
-                        reuseNode true
-                    }
-                }
-                options {
-                    timeout(time: 15, unit: 'MINUTES')
-                }
-                steps {
-                    sh("cd ${config.folder} && ./mvnw --batch-mode test")
-                }
-                post {
-                    always {
-                        junit "${config.folder}/**/TEST-*.xml"
-                    }
-                }
+            // stage('TESTS') {
+            //     agent {
+            //         docker {
+            //             image 'openjdk:11-jdk-slim'
+            //             args '-v $HOME/.m2:/root/.m2'
+            //             reuseNode true
+            //         }
+            //     }
+            //     options {
+            //         timeout(time: 15, unit: 'MINUTES')
+            //     }
+            //     steps {
+            //         sh("cd ${config.folder} && ./mvnw --batch-mode test")
+            //     }
+            //     post {
+            //         always {
+            //             junit "${config.folder}/**/TEST-*.xml"
+            //         }
+            //     }
 
-            }
+            // }
 
-            stage('RELEASE') {
-                when {
-                    branch 'master'
-                }
-                agent {
-                    docker {
-                        image 'openjdk:11-jdk-slim'
-                        args '-v $HOME/.m2:/root/.m2'
-                        reuseNode true
-                    }
-                }
-                options {
-                    timeout(time: 15, unit: 'MINUTES')
-                }
-                steps {
-                    sh("cd ${config.folder} && ./mvnw --batch-mode release:prepare release:perform")
-                }
-                post {
-                    success {
-                        echo ("A new release have been made !!\nShould send email or a slack notif instead !")
-                    }
-                }
-            }
+            // stage('RELEASE') {
+            //     when {
+            //         branch 'master'
+            //     }
+            //     agent {
+            //         docker {
+            //             image 'openjdk:11-jdk-slim'
+            //             args '-v $HOME/.m2:/root/.m2'
+            //             reuseNode true
+            //         }
+            //     }
+            //     options {
+            //         timeout(time: 15, unit: 'MINUTES')
+            //     }
+            //     steps {
+            //         sh("cd ${config.folder} && ./mvnw --batch-mode release:prepare release:perform")
+            //     }
+            //     post {
+            //         success {
+            //             echo ("A new release have been made !!\nShould send email or a slack notif instead !")
+            //         }
+            //     }
+            // }
 
         }
 
