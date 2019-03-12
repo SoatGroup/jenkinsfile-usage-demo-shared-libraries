@@ -104,9 +104,9 @@ def call(Map config) {
         }
 
         post {
-            always {
-                cleanWs()
-            }
+            // always {
+            //     cleanWs()
+            // }
             failure {
                 echo ("Something was wrong !!\nShould send email or a slack notif instead !")
             }
