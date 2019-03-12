@@ -1,0 +1,23 @@
+<h1>Spring Boot</h1>
+
+<p>
+   Build a spring boot project
+</p>
+
+<h2>How to use</h2>
+
+<p>
+    Find a sample of usage below
+</p>
+
+<p>
+    <pre>
+    #!/usr/bin/env groovy
+    @Library(['sample-shared-libraries@v1.0.0']) _
+    springBoot([
+            credentialsId: 'github-id',
+            repository: 'https://github.com/SoatGroup/jenkinsfile-usage-demo/',
+            folder: 'sample-spring-boot-app'
+    ])
+    <pre>
+</p>
