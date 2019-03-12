@@ -14,7 +14,9 @@ def call(Map config) {
             buildDiscarder(logRotator(numToKeepStr: '10'))
         }
 
-        environment { 
+        environment {
+            MVNW_VERBOSE="true"
+            M2_HOME='/root/.m2' 
             MAVEN_OPTS = "-Dmaven.home=/root/.m2 -Xmx256m"
         }
 
@@ -48,6 +50,7 @@ def call(Map config) {
                 }
                 steps {
                     sh("env")
+                    sh("mkdir ${M2_HOME}")
                     sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --version")
                     sh("cd ${config.folder} && ./mvnw ${MAVEN_OPTS} --batch-mode compile")
                 }
