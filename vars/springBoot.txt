@@ -1,23 +1,13 @@
-<h1>Spring Boot</h1>
+# Spring Boot
 
-<p>
-   Build a spring boot project
-</p>
+Build a spring boot project
 
-<h2>How to use</h2>
+## How to use
 
-<p>
-    Find a sample of usage below
-</p>
+* `folder` : The folder to go before run a build
 
-<p>
-    <pre>
-    #!/usr/bin/env groovy
-    @Library(['sample-shared-libraries@v1.0.0']) _
-    springBoot([
-            credentialsId: 'github-id',
-            repository: 'https://github.com/SoatGroup/jenkinsfile-usage-demo/',
-            folder: 'sample-spring-boot-app'
-    ])
-    <pre>
-</p>
+```groovy
+#!/usr/bin/env groovy
+@Library(['sample-shared-libraries@v1.0.0']) _
+springBoot([ folder: 'sample-spring-boot-app' ])
+```

@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 // vars/springBoot.groovy
-def call(Map config) {
+def call(String config) {
 
     pipeline {
 
@@ -20,16 +20,7 @@ def call(Map config) {
                     echo("""
                     Sample of spring boot application :
 
-                    Requirements :
-                    * [Recommended] Set new credentials : ${JENKINS_URL}credentials/store/system/domain/_/newCredentials
-                    * Type : username & password
-                    * ID : 'github-id'
-                    * Username : YOUR_GITHUB_USER
-                    * Password : YOUR_GITHUB_PASSWORD
-
                     Shared library variables :
-                    * folder : ${config.folder}
-                    * credentials : ${config.credentialsId}
                     * repository : ${config.repository}
 
                     Pipeline description :
@@ -93,7 +84,7 @@ def call(Map config) {
                     timeout(time: 15, unit: 'MINUTES')
                 }
                 steps {
-                    sh("cd ${folder} && ./mvnw --batch-mode release:prepare release:perform")
+                    sh("cd ${config.folder} && ./mvnw --batch-mode release:prepare release:perform")
                 }
                 post {
                     success {
