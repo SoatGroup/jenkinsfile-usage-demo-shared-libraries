@@ -37,8 +37,6 @@ def call(Map config) {
                     * TESTS : Launch tests
                     * RELEASE : Execute release (only on master branch)
                     """)
-
-                    sh('env')
                 }
             }
 
