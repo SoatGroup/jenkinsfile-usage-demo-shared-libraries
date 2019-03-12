@@ -40,17 +40,6 @@ def call(Map config) {
                 }
             }
 
-            stage('CHECKOUT') {
-                steps {
-                    checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: "${env.GIT_BRANCH}"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            userRemoteConfigs: [[credentialsId: "${config.credentialsId}", url: "${config.repository}"]]
-                    ])
-                }
-            }
-
             stage('COMPILE') {
                 agent {
                     docker {
