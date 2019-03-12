@@ -16,8 +16,9 @@ def call(Map config) {
 
         environment {
             MVNW_VERBOSE="true"
-            M2_HOME="${WORKSPACE}/.m2"
-            MAVEN_OPTS="-Dmaven.user.home=${WORKSPACE}/.m2 -Xmx256m"
+            MAVEN_USER_HOME="${WORKSPACE}/${config.folder}/.m2"
+            MAVEN_OPTS="-Xmx256m"
+            // MAVEN_OPTS="-Dmaven.user.home=${WORKSPACE}/.m2 -Xmx256m"
         }
 
         stages {
@@ -41,7 +42,7 @@ def call(Map config) {
                 agent {
                     docker {
                         image 'openjdk:11-jdk-slim'
-                        args "-v /home/vagrant/.m2:${M2_HOME}"
+                        args "-v /home/vagrant/.m2:${MAVEN_USER_HOME}"
                         reuseNode true
                     }
                 }
@@ -49,10 +50,10 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
-                    echo "${M2_HOME}"
+                    echo "${MAVEN_USER_HOME}"
                     sh("env")
                     sh("pwd")
-                    sh("ls -al ${M2_HOME}")
+                    sh("ls -al ${MAVEN_USER_HOME}")
 
                     sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("ls -al /home/vagrant/workspace/app-shared-libraries_feature_wip/sample-spring-boot-app/?/.m2/wrapper/dists/apache-maven-3.6.0-bin/*")
