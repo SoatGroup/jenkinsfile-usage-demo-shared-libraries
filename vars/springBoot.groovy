@@ -4,7 +4,7 @@ def call(Map config) {
 
     pipeline {
 
-        agent { label 'master' }
+        agent { label 'docker' }
 
         options {
             timestamps()
