@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-// vars/springBoot.groovy
+// vars/springBootPipeline.groovy
 def call(Map config) {
 
     pipeline {
@@ -23,6 +23,28 @@ def call(Map config) {
                 steps {
                     echo("""
                     Sample of spring boot application :
+
+                    Requirements :
+                    * Run the vagrant jenkins-slave instance :
+                      * Start the server instance : `vagrant up jenkins-slave --no-provision`
+                      * Provision the running instance : `vagrant provision jenkins-slave`
+                    * Create a new credentials : http://vcap.me:8090/credentials/store/system/domain/_/newCredentials
+                      * Kind : SSH Username with private key
+                      * ID : 'vagrant-id'
+                      * Description : 'vagrant-id'
+                      * Username : 'vagrant'
+                      * Private key : https://raw.githubusercontent.com/SoatGroup/jenkinsfile-usage-demo/master/vagrant-images/data/server/demo-soat
+                    * Create a node : http://vcap.me:8090/computer/new
+                      * Node name : 'jenkins-slave'
+                      * #2 of executors : 2
+                      * Remote root directory : /home/vagrant
+                      * Labels : 'vagrant docker'
+                      * Launch method : 'Launch agent agents via SSH'
+                        * Host : '192.168.10.30'
+                        * Credentials : 'vagrant-id'
+                        * Host Key Verification Strategy : 'Non verifying Verification Strategy'
+                      * Check the `Environment variables`
+                        * Add a variable : `USER_HOME` = `/home/vagrant`
 
                     Shared library variables :
                     * folder : ${config.folder}
@@ -48,8 +70,6 @@ def call(Map config) {
                     timeout(time: 10, unit: 'MINUTES')
                 }
                 steps {
-                    sh("ls ${USER_HOME}/.m2/*")
-                    sh("cd ${config.folder} && ./mvnw --batch-mode help:effective-settings")
                     sh("cd ${config.folder} && ./mvnw --batch-mode compile")
                 }
             }
@@ -113,10 +133,5 @@ def call(Map config) {
         }
 
     }
-
-
-
-
-
 
 }

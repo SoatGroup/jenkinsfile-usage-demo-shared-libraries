@@ -1,0 +1,42 @@
+# Spring Boot Stage
+
+Stage to build a spring boot project
+
+## Variables
+
+* `folder` : The folder to go before run a build
+
+## Examples
+
+```groovy
+#!/usr/bin/env groovy
+@Library(['sample-shared-libraries@v1.0.0']) _
+pipeline {
+
+    agent { label 'docker' }
+
+    options {
+        timestamps()
+        skipStagesAfterUnstable()
+        disableConcurrentBuilds()
+        timeout(time: 40, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    environment {
+        MAVEN_OPTS = "-Duser.home=${USER_HOME} -Xmx256m"
+    }
+
+    springBootStage([folder: 'sample-spring-boot-app'])
+
+    post {
+        always {
+            cleanWs()
+        }
+        failure {
+            echo("Something was wrong !!\nShould send email or a slack notif instead !")
+        }
+    }
+
+}
+```

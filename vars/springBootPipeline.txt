@@ -1,10 +1,12 @@
-# Spring Boot
+# Spring Boot Pipeline
 
-Build a spring boot project
+Pipeline to build a spring boot project
 
-## How to use
+## Variables
 
 * `folder` : The folder to go before run a build
+
+## Examples :
 
 ```groovy
 #!/usr/bin/env groovy
