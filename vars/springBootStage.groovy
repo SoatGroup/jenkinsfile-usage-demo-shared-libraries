@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-// vars/springBootPipeline.groovy
+// vars/springBootStage.groovy
 def call(Map config) {
 
     pipeline {
